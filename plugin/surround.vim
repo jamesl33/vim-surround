@@ -209,7 +209,7 @@ function! s:wrap(string,char,type,removed,special)
         endif
       endif
     endif
-  elseif newchar ==# 'l' || newchar == '\'
+  elseif newchar ==# 'l'
     " LaTeX
     let env = input('\begin{')
     if env != ""
@@ -398,9 +398,7 @@ function! s:dosurround(...) " {{{1
   let otype = getregtype('"')
   call setreg('"',"")
   let strcount = (scount == 1 ? "" : scount)
-  if char == '/'
-    exe 'norm! '.strcount.'[/d'.strcount.']/'
-  elseif char =~# '[[:punct:][:space:]]' && char !~# '[][(){}<>"''`]'
+  if char =~# '[[:punct:][:space:]]' && char !~# '[][(){}<>"''`]'
     exe 'norm! T'.char
     if getline('.')[col('.')-1] == char
       exe 'norm! l'
@@ -426,10 +424,6 @@ function! s:dosurround(...) " {{{1
   elseif char =~ "[\"'`]"
     exe "norm! i \<Esc>d2i".char
     call setreg('"',substitute(getreg('"'),' ','',''))
-  elseif char == '/'
-    norm! "_x
-    call setreg('"','/**/',"c")
-    let keeper = substitute(substitute(keeper,'^/\*\s\=','',''),'\s\=\*$','','')
   elseif char =~# '[[:punct:][:space:]]' && char !~# '[][(){}<>]'
     exe 'norm! F'.char
     exe 'norm! df'.char
